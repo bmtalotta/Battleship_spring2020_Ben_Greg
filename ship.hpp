@@ -1,5 +1,5 @@
 // ship.hpp
-// Greg Talotta
+// Greg Talotta and Ben Talotta
 // 2019-09-24
 //
 // For CS 372 Fall 2019
@@ -8,19 +8,37 @@
 #ifndef FILE_SHIP_HPP_INCLUDED
 #define FILE_SHIP_HPP_INCLUDED
 #include <utility>
+#include <vector>
+using std::vector;
 using std::pair;
 
 class Ship{
     public:
-        explicit Ship(int size = 0, int x = 0, int y = 0) :_status(true),
-                        _size(size),
-                        _pos(x,y)
+        explicit Ship(int size = 0, int x = 0, int y = 0, bool vert = true) :_aliveStatus(true),
+                        _size(size), _position(x,y), _vertical(vert)
         {
+            _location.push_back(_position);
+            for(int i = 1; i < _size; ++i)
+            {
+                if(_vertical)
+                {
+                    _location.push_back({x, y+i});
+                }
+                else
+                {
+                    _location.push_back({x+i, y});
+                }
+            }
         }
 
         bool getStatus()
         {
-            return _status;
+            return _aliveStatus;
+        }
+
+        vector<pair<int,int>> getLocation()
+        {
+            return _location;
         }
 
         int getSize()
@@ -30,15 +48,33 @@ class Ship{
 
         pair<int,int> getPos()
         {
-            return _pos;
+            return _position;
+        }
+
+        bool getVertical()
+        {
+            return _vertical;
+        }
+        
+        bool incrementHit()
+        {
+            _amountHit += 1;
+            if(_amountHit == _size)
+            {
+                _aliveStatus = false;
+            }
+            return _aliveStatus;
         }
 
 
-    private:
-        bool _status;
-        int _size;
-        pair<int,int> _pos; 
 
+    private:
+        bool _aliveStatus = true;
+        int _size;
+        pair<int,int> _position; 
+        bool _vertical;
+        int _amountHit = 0;
+        vector<pair<int,int>> _location;
 
 };
 

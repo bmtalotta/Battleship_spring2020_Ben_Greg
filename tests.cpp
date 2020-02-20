@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "ship.hpp"
+#include "game.hpp"
 #include <utility>
 using std::pair;
 
@@ -30,4 +31,26 @@ TEST_CASE("a ship has a start position"){
             CHECK(rowboat.getPos() == mypair);
         }
     }
+}
+
+TEST_CASE("ship has a direction"){
+    Ship rowboat = Ship(2, 1, 1, true);
+    Ship skipper = Ship(2, 1, 1, false);
+    Ship boatymcboatface = Ship(2, 1, 1, true);
+    Ship airfighter = Ship(2, 1, 1, false);
+    CHECK(rowboat.getVertical() == true);
+    CHECK(skipper.getVertical() == false);
+    CHECK(boatymcboatface.getVertical() == true);
+    CHECK(airfighter.getVertical() == false);
+}
+
+
+TEST_CASE("shpe can sink"){
+    Ship rowboat = Ship(2, 1, 1, true);
+    Ship skipper = Ship(3, 1, 1, false);
+    CHECK(rowboat.incrementHit() == true);
+    CHECK(rowboat.incrementHit() == false);
+    CHECK(skipper.incrementHit() == true);
+    CHECK(skipper.incrementHit() == true);
+    CHECK(skipper.incrementHit() == false);
 }
