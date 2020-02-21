@@ -25,8 +25,7 @@ class game
         }
         void playGame()
         {
-            bool playing = true;
-            while(playing)
+            while(playing())
             {
                 int crap = 0;
                 playerOneTurn();
@@ -37,7 +36,6 @@ class game
                 cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" ;
                 cout << "It is now player one's turn, hit enter to continue\n";
                 cin.ignore();
-                playing = false;
             }
         }
     private:
@@ -46,7 +44,7 @@ class game
             printGuessBoard(player1AlreadyShot,player2Ships);
             cout << "----------------------------\n";
             printPlayerBoard(player1Ships);
-            guess(player1AlreadyShot,player1Ships); 
+            guess(player1AlreadyShot,player2Ships); 
             
         }
         void playerTwoTurn()
@@ -54,7 +52,7 @@ class game
             printGuessBoard(player2AlreadyShot,player1Ships);
             cout << "----------------------------\n";
             printPlayerBoard(player2Ships);
-            guess(player2AlreadyShot,player2Ships);
+            guess(player2AlreadyShot,player1Ships);
         }
         void guess(vector<pair<int,int>>&shots, vector<Ship> ships)
         {   
@@ -151,6 +149,37 @@ class game
                 }
                 cout << "\n";
             }
+        }
+
+        bool playing()
+        {
+            bool teamstat = false;
+            for(int i = 0; i < player1Ships.size(); ++i)
+            {
+                if(player1Ships[i].getStatus() == true)
+                {
+                    teamstat = true;
+                }
+            }
+            if(teamstat == false)
+            {
+                cout << "\n player 2 wins \n";
+                return false;
+            }
+            teamstat = false;
+            for(int i = 0; i < player2Ships.size(); ++i)
+            {
+                if(player2Ships[i].getStatus() == true)
+                {
+                    teamstat = true;
+                }
+            }
+            if(teamstat == false)
+            {
+                cout << "\n player 1 wins \n";
+                return false;
+            }
+            return true;
         }
         vector<pair<int,int>> player1AlreadyShot;
         vector<Ship> player1Ships = {Ship(2, 1, 1), Ship(3, 2, 1), Ship(3, 3, 1), Ship(4,4,1), Ship(5,5,1)};
